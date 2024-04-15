@@ -1,114 +1,102 @@
 <template>
   <div class="user-panel">
-    <div class="user-info">
-      <div class="image-container">
-        <div class="user-image" />
-      </div>
-      <div class="user-name">{{email}}</div>
-    </div>
-
-    <dx-context-menu
+    <dx-drop-down-button
       v-if="menuMode === 'context'"
-      target=".user-button"
-      :items="menuItems"
-      :width="210"
-      show-event="dxclick"
-      css-class="user-menu"
+      ref="dropDownBtn"
+      styling-mode="text"
+      :icon="avatar"
+      :show-arrow-icon="false"
+      :element-attr="{
+        class: 'user-button',
+      }"
+      :drop-down-options="{
+        width: 'auto',
+      }"
+      drop-down-content-template="dropDownContentTemplate"
     >
-      <dx-position my="top center" at="bottom center" />
-    </dx-context-menu>
+      <template #dropDownContentTemplate>
+        <user-menu-section 
+          :email="email"
+          :menu-items="menuItems"
+          @click:menu-item="onMenuItemClick"
+        />
+      </template>
+    </dx-drop-down-button>
 
-    <dx-list
+    <user-menu-section
       v-if="menuMode === 'list'"
       class="dx-toolbar-menu-action"
-      :items="menuItems"
+      :email="email"
+      :menu-items="menuItems"
+      :avatar="avatar"
     />
   </div>
 </template>
 
-<script>
-import DxContextMenu, { DxPosition } from "devextreme-vue/context-menu";
-import DxList from "devextreme-vue/list";
+<script setup>
+import { DxDropDownButton } from 'devextreme-vue';
+import UserMenuSection from './user-menu-section.vue';
+import { defineProps, ref } from 'vue';
 
-export default {
-  props: {
-    menuMode: String,
-    menuItems: Array,
-    email: String
-  },
-  components: {
-    DxContextMenu,
-    DxPosition,
-    DxList
-  }
-};
+defineProps({
+  menuMode: String,
+  menuItems: Array,
+  email: String
+});
+
+const avatar = "https://js.devexpress.com/Demos/WidgetsGallery/JSDemos/images/employees/06.png";
+const dropDownBtn = ref(null);
+
+function onMenuItemClick () {
+  dropDownBtn.value?.instance.close()
+}
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 @import "../themes/generated/variables.base.scss";
 
-.user-info {
+.user-panel  {
   display: flex;
-  align-items: center;
+  flex-direction: column;
 
-  .dx-toolbar-menu-section & {
-    padding: 10px 6px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  }
+  :deep(.user-button) {
+    margin-left: 5px;
 
-  .image-container {
-    overflow: hidden;
-    border-radius: 50%;
-    height: 30px;
-    width: 30px;
-    margin: 0 4px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    img.dx-icon {
+      border-radius: 50%;
+      margin: 0;
+      width: auto;
+      aspect-ratio: 1 / 1;
+      box-sizing: border-box;
+      border: 1px solid var(--base-border-color);
+      object-fit: cover;
+      object-position: top;
+      background: rgb(255, 255, 255);
+      background-clip: padding-box;
 
-    .user-image {
-      width: 100%;
-      height: 100%;
-      background: url("https://js.devexpress.com/Demos/WidgetsGallery/JSDemos/images/employees/06.png")
-        no-repeat #fff;
-      background-size: cover;
+      .dx-theme-generic & {
+        height: 100%;
+      }
+
+      .dx-theme-material & {
+        height: 100%;
+      }
+    }
+
+    .dx-buttongroup {
+      vertical-align: middle;
+
+      .dx-button.dx-button-has-icon:not(.dx-button-has-text) {
+        .dx-button-content {
+          padding: 0;
+        }
+
+        &.dx-state-hover,
+        &.dx-state-focused {
+          background-color: transparent;
+        }
+      }
     }
   }
-
-  .user-name {
-    font-size: 14px;
-    color: $base-text-color;
-    margin: 0 9px;
-  }
-}
-
-.user-panel {
-  .dx-list-item .dx-icon {
-    vertical-align: middle;
-    color: $base-text-color;
-    margin-right: 16px;
-  }
-  .dx-rtl .dx-list-item .dx-icon {
-    margin-right: 0;
-    margin-left: 16px;
-  }
-}
-
-.dx-context-menu.user-menu.dx-menu-base {
-  &.dx-rtl {
-    .dx-submenu .dx-menu-items-container .dx-icon {
-      margin-left: 16px;
-    }
-  }
-  .dx-submenu .dx-menu-items-container .dx-icon {
-    margin-right: 16px;
-  }
-  .dx-menu-item .dx-menu-item-content {
-    padding: 3px 15px 4px;
-  }
-}
-
-.dx-theme-generic .user-menu .dx-menu-item-content .dx-menu-item-text {
-  padding-left: 4px;
-  padding-right: 4px;
 }
 </style>

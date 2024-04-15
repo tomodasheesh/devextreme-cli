@@ -29,14 +29,7 @@ export default function Header({ menuToggleEnabled, title, toggleMenu }<%=#isTyp
           locateInMenu={'auto'}
           menuItemTemplate={'userPanelTemplate'}
         >
-          <Button
-            className={'user-button authorization'}
-            width={210}
-            height={'100%'}
-            stylingMode={'text'}
-          >
-            <UserPanel menuMode={'context'} />
-          </Button>
+          <UserPanel menuMode={'context'} />
         </Item>
         <Template name={'userPanelTemplate'}>
           <UserPanel menuMode={'list'} />

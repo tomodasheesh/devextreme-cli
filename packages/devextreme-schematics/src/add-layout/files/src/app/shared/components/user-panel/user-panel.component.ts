@@ -1,8 +1,8 @@
-import { Component, NgModule, Input } from '@angular/core';
+import { Component, NgModule, Input, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { DxListModule } from 'devextreme-angular/ui/list';
-import { DxContextMenuModule } from 'devextreme-angular/ui/context-menu';
+import { DxDropDownButtonModule, DxDropDownButtonComponent } from 'devextreme-angular/ui/drop-down-button';
+import { UserMenuSectionModule } from '../user-menu-section/user-menu-section.component';
 import { IUser } from '../../services/auth.service';
 
 @Component({
@@ -21,14 +21,20 @@ export class UserPanelComponent {
   @Input()
   user!: IUser | null;
 
+  @ViewChild(DxDropDownButtonComponent) dropDownBtn?: DxDropDownButtonComponent;
+
+  onMenuItemClick() {
+    this.dropDownBtn?.instance.close();
+  }
+
   constructor() {}
 }
 
 @NgModule({
   imports: [
-    DxListModule,
-    DxContextMenuModule,
-    CommonModule
+    DxDropDownButtonModule,
+    UserMenuSectionModule,
+    CommonModule,
   ],
   declarations: [ UserPanelComponent ],
   exports: [ UserPanelComponent ]

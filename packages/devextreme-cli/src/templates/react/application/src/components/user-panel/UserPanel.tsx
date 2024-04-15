@@ -1,57 +1,48 @@
-import React, { useMemo, useCallback } from 'react';
-import { useNavigate } from "react-router-dom";
-import ContextMenu, { Position } from 'devextreme-react/context-menu';
-import List from 'devextreme-react/list';
+import React, { useRef, useCallback } from 'react';
+import DropDownButton from 'devextreme-react/drop-down-button';
+import { Template } from 'devextreme-react/core/template';
 import { useAuth } from '../../contexts/auth';
 import './UserPanel.scss';
 <%=#isTypeScript%>import type { UserPanelProps } from '../../types';<%=/isTypeScript%>
+import { UserMenuSection } from '../user-menu-section/UserMenuSection';
 
 export default function UserPanel({ menuMode }<%=#isTypeScript%>: UserPanelProps<%=/isTypeScript%>) {
-  const { user, signOut } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
 
-  const navigateToProfile = useCallback(() => {
-    navigate("/profile");
-  }, [navigate]);
-  const menuItems = useMemo(() => ([
-    {
-      text: 'Profile',
-      icon: 'user',
-      onClick: navigateToProfile
-    },
-    {
-      text: 'Logout',
-      icon: 'runner',
-      onClick: signOut
-    }
-  ]), [navigateToProfile, signOut]);
+  const dropDownButtonAttributes = {
+    class: 'user-button'
+  };
+
+  const buttonDropDownOptions = {
+    width: 'auto'
+  };
+
+  const dropDownBtn = useRef<%=#isTypeScript%><DropDownButton><%=/isTypeScript%>(null);
+  const onMenuItemClick = useCallback(() => {
+    dropDownBtn.current<%=#isTypeScript%>?<%=/isTypeScript%>.instance.close();
+  }, []);
+
   return (
     <div className={'user-panel'}>
-      <div className={'user-info'}>
-        <div className={'image-container'}>
-          <div
-            style={{
-              background: `url(${user<%=#isTypeScript%>!<%=/isTypeScript%>.avatarUrl}) no-repeat #fff`,
-              backgroundSize: 'cover'
-            }}
-            className={'user-image'} />
-        </div>
-        <div className={'user-name'}>{user<%=#isTypeScript%>!<%=/isTypeScript%>.email}</div>
-      </div>
-
       {menuMode === 'context' && (
-        <ContextMenu
-          items={menuItems}
-          target={'.user-button'}
-          showEvent={'dxclick'}
-          width={210}
-          cssClass={'user-menu'}
+        <DropDownButton stylingMode='text'
+          ref={dropDownBtn}
+          icon={user<%=#isTypeScript%>?<%=/isTypeScript%>.avatarUrl} 
+          showArrowIcon={false}
+          elementAttr={dropDownButtonAttributes}
+          dropDownOptions={buttonDropDownOptions}
+          dropDownContentTemplate='dropDownTemplate'
         >
-          <Position my={{ x: 'center', y: 'top' }} at={{ x: 'center', y: 'bottom' }} />
-        </ContextMenu>
+          <Template name='dropDownTemplate'>
+            <UserMenuSection onMenuItemClick={onMenuItemClick} />
+          </Template>
+        </DropDownButton>
       )}
       {menuMode === 'list' && (
-        <List className={'dx-toolbar-menu-action'} items={menuItems} />
+        <UserMenuSection
+          showAvatar
+          className={'dx-toolbar-menu-action'}
+        />
       )}
     </div>
   );

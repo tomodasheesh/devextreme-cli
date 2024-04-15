@@ -1,16 +1,18 @@
 # Testing
 
-## Build docker image 
+## Build docker image
+
 ```sh
 $ lerna run docker:build
 ```
 
 ## Run docker image with browser
+
 ```sh
 $ lerna run docker:run
 ```
 
-## Run tests 
+## Run tests
 
 To run tests for all target frameworks, use the following command:
 
@@ -38,7 +40,7 @@ npm run create-template
 npm run create-template -- -- -e angular
 npm run create-template -- -- -e react
 npm run create-template -- -- -e react-ts
-npm run create-template -- -- -e vue-v3
+npm run create-template -- -- -e vue
 ```
 
 ## Lint Applications
@@ -53,7 +55,7 @@ npm run lint-template
 npm run lint-template -- -- -e angular
 npm run lint-template -- -- -e react
 npm run lint-template -- -- -e react-ts
-npm run lint-template -- -- -e vue-v3
+npm run lint-template -- -- -e vue
 ```
 
 ## Test Applications
@@ -68,7 +70,7 @@ npm run test-template
 npm run test-template -- -- -e angular
 npm run test-template -- -- -e react
 npm run test-template -- -- -e react-ts
-npm run test-template -- -- -e vue-v3
+npm run test-template -- -- -e vue
 ```
 
 ## Run Tests for Existing Test Applications
@@ -83,7 +85,7 @@ npm run test-dev
 npm run test -- -- -t angular
 npm run test -- -- -t react
 npm run test -- -- -t react-ts
-npm run test -- -- -t vue-v3
+npm run test -- -- -t vue
 ```
 
 ## Replace etalon
@@ -98,14 +100,14 @@ Modifying an application template directly is not recommended. Instead, generate
 2. Modify the application as required.
 3. Run a script that updates templates for all frameworks:
 
-    ```sh
-    npm run update-template
-    ```
-    
-    ... or a script that updates the template for an individual framework:
+   ```sh
+   npm run update-template
+   ```
 
-    ```sh
-    npm run update-template -- -p angular
-    npm run update-template -- -p react-ts
-    npm run update-template -- -p vue-v3
-    ```
+   ... or a script that updates the template for an individual framework:
+
+   ```sh
+   npm run update-template -- -p angular
+   npm run update-template -- -p react-ts
+   npm run update-template -- -p vue
+   ```

@@ -1,25 +1,31 @@
 <div class="user-panel">
-  <div class="user-info">
-    <div class="image-container">
-      <div class="user-image"></div>
-    </div>
-    <div class="user-name">{{user?.email}}</div>
-  </div>
-  <dx-context-menu
+  <dx-drop-down-button
     *ngIf="menuMode === 'context'"
-    [items]="menuItems"
-    target=".user-button"
-    showEvent="dxclick"
-    width="210px"
-    [position]="{
-      my: 'top',
-      at: 'bottom'
+    stylingMode="text"
+    dropDownContentTemplate="dropDownTemplate"
+    [icon]="user?.avatarUrl"
+    [showArrowIcon]="false"
+    [elementAttr]="{
+      class: 'user-button'
     }"
-    cssClass="user-menu">
-  </dx-context-menu>
-  <dx-list
+    [dropDownOptions]="{
+      width: 'auto'
+    }"
+  >
+    <div *dxTemplate="let data of 'dropDownTemplate'">
+      <user-menu-section
+        [menuItems]="menuItems"
+        [showAvatar]="false"
+        [user]="user"
+        (onMenuItemClick)="onMenuItemClick()"
+      />
+    </div>
+  </dx-drop-down-button>
+  <user-menu-section
     *ngIf="menuMode === 'list'"
     class="dx-toolbar-menu-action"
-    [items]="menuItems">
-  </dx-list>
+    [menuItems]="menuItems"
+    [showAvatar]="true"
+    [user]="user"
+  />
 </div>

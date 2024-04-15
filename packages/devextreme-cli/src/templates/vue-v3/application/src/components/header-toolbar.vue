@@ -28,18 +28,11 @@
         locate-in-menu="auto"
         menu-item-template="menuUserItem"
       >
-      <template #default>
-          <div>
-            <dx-button
-              class="user-button authorization"
-              :width="210"
-              height="100%"
-              styling-mode="text"
-            >
-              <user-panel :email="email" :menu-items="userMenuItems" menu-mode="context" />
-            </dx-button>
-          </div>
-        </template>
+        <user-panel 
+          :email="email"
+          :menu-items="userMenuItems"
+          menu-mode="context"
+        />
       </dx-item>
       
       <template #menuUserItem>
